@@ -23,10 +23,10 @@ jobs:
       pull-requests: write
       issues: write
       id-token: write
-      actions: read
+      actions: read  # Fixes 403 "Fetching issue comment" errors
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -35,5 +35,9 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          debug: true  # Temporary: see full Claude logs to debug further
           claude_args: |
+            --max-turns 10
+            --allowedTools "Read,Write,Grep,LS"
+            --disallowedTools "Bash,WebSearch,WebFetch,Edit,MultiEdit"
             --system-prompt "Follow our coding standards. Ensure all new code has tests. Use TypeScript for new files."
