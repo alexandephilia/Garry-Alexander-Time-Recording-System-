@@ -37,7 +37,9 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_PAT }}  # Full repo access, no 403 bullshit
           claude_args: |
+            --model claude-sonnet-4-6
             --max-turns 10
             --allowedTools "Read,Write,Grep,LS,Bash(git status),Bash(git diff)"
             --disallowedTools "Bash(git push),Bash(git commit),WebSearch"
+
             --system-prompt "Follow our coding standards. Ensure all new code has tests. Use TypeScript for new files."
