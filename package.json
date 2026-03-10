@@ -1,0 +1,32 @@
+{
+  "name": "time-recording-system",
+  "version": "1.0.0",
+  "description": "A concurrent-safe time-recording system with clock events, work rules, and reporting.",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "seed": "tsx prisma/seed.ts",
+    "test:concurrency": "tsx tests/concurrency.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.1",
+    "helmet": "^8.1.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.10.1",
+    "axios": "^1.7.9",
+    "prisma": "^6.19.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

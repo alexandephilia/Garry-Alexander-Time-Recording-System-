@@ -1,0 +1,41 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  name        String?
+  clockEvents ClockEvent[]
+}
+
+enum EventType {
+  IN
+  OUT
+}
+
+model ClockEvent {
+  id        Int       @id @default(autoincrement())
+  type      EventType
+  timestamp DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+
+  @@index([userId, timestamp])
+}
+
+model WorkRule {
+  id             Int      @id @default(autoincrement())
+  dayOfWeek      Int      // 0-6 (Sunday-Saturday)
+  isWorkingDay   Boolean  @default(true)
+  normalHours    Float    @default(8.0)
+  
+  @@unique([dayOfWeek])
+}
