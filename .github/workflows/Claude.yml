@@ -35,7 +35,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_PAT }}  # Full repo access, no 403 bullshit
+          github_token: ${{ secrets.GH_PAT }}  # Full repo access, no 403 bullshit
           claude_args: |
             --model claude-sonnet-4-6
             --max-turns 10
