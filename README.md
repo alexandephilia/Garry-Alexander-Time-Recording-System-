@@ -109,6 +109,7 @@ npx prisma generate
 
 # Seed default data (test user + work rules)
 npx prisma db seed
+# Creates test@example.com with id=1 (used in all API examples below) and Mon–Fri work rules (8h/day)
 ```
 
 ### Start the server
@@ -277,6 +278,12 @@ curl -X POST http://localhost:3000/api/users \
 curl http://localhost:3000/api/users
 ```
 
+#### Get Single User
+
+```bash
+curl http://localhost:3000/api/users/1
+```
+
 ---
 
 ## Concurrency & Resource Contention
@@ -289,9 +296,7 @@ The included test suite validates this by firing 10 simultaneous `POST /api/cloc
 
 ---
 
----
-
-## My Take's Note & Implementation Choices
+## Author's Note & Implementation Choices
 
 I approached this assignment with two goals: absolute correctness under concurrency and zero friction for the reviewer.
 
