@@ -22,22 +22,22 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
-      id-token: write
-      actions: read  # Fixes 403 "Fetching issue comment" errors
+      # NO id-token needed with PAT
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
+          token: ${{ secrets.GITHUB_PAT }}  # Use PAT for checkout too
 
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          debug: true  # Temporary: see full Claude logs to debug further
+          github_token: ${{ secrets.GITHUB_PAT }}  # Full repo access, no 403 bullshit
           claude_args: |
             --max-turns 10
-            --allowedTools "Read,Write,Grep,LS"
-            --disallowedTools "Bash,WebSearch,WebFetch,Edit,MultiEdit"
+            --allowedTools "Read,Write,Grep,LS,Bash(git status),Bash(git diff)"
+            --disallowedTools "Bash(git push),Bash(git commit),WebSearch"
             --system-prompt "Follow our coding standards. Ensure all new code has tests. Use TypeScript for new files."
