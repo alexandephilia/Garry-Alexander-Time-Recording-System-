@@ -1,4 +1,8 @@
-# Time-Recording System
+# Time-Recording System <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Tear%20Off%20Calendar.webp" alt="Tear Off Calendar" width="25" height="25" />
+
+[![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](#) [![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white)](#) [![Prisma](https://img.shields.io/badge/Prisma-3982CE?logo=prisma&logoColor=white)](#) [![SQLite](https://img.shields.io/badge/SQLite-07405E?logo=sqlite&logoColor=white)](#)
+<br />
+[![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?logo=claude&logoColor=fff)](#)
 
 A concurrency-safe time-recording REST API built with **Node.js**, **TypeScript**, **Express v5**, **Prisma ORM**, and **SQLite**.
 
@@ -336,3 +340,22 @@ This runs a comprehensive suite covering:
 - Event CRUD (list, get, update, delete)
 - Report generation with overtime
 - Concurrency stress test (10 simultaneous requests)
+
+## Code Maintainers
+
+<table>
+  <tr>
+    <td align="center" valign="top">
+      <a href="https://github.com/alexandephilia">
+        <img src="https://avatars.githubusercontent.com/u/43126944?v=4" width="100px;" height="100px;" style="border-radius: 30%;" alt=""/><br />
+        <sub><b>Alexandephilia</b></sub>
+      </a><br />
+      <sub>Architect</sub>
+    </td>
+    <td align="center" valign="top">
+      <img src="https://matthiasroder.com/content/images/2026/01/Claude.png" width="100px;" height="100px;" style="border-radius: 30%;" alt=""/><br />
+      <sub><b>Claude</b></sub><br />
+      <sub>Implementation</sub>
+    </td>
+  </tr>
+</table>
