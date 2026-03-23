@@ -1486,7 +1486,7 @@ body {
 }
 
 .loading-state {
-    text-align: center;
+    text-align: center !important;
     padding: 24px;
     color: var(--text-muted);
     font-style: italic;
