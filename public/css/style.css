@@ -720,7 +720,7 @@ body {
 
 /* Machine-generated logical prefix */
 #feedbackText::before {
-    content: "SYS_PRNT //";
+    content: "|| MESSAGE||";
     display: block;
     font-size: 7.5px;
     font-weight: 400;
