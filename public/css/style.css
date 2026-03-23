@@ -1065,42 +1065,69 @@ body {
    ═══════════════════════════════════ */
 .filter-tabs-container {
     display: flex;
-    gap: 8px;
+}
+
+.tabs-track {
+    display: inline-flex;
+    position: relative;
+    background: var(--inset-bg);
+    padding: 2px;
+    border-radius: 20px;
+    box-shadow: 
+        inset 1px 1px 4px rgba(0,0,0,0.12), 
+        inset -1px -1px 3px rgba(255,255,255,0.6),
+        0 1px 0 rgba(255,255,255,0.5);
+    border: 1px solid rgba(0,0,0,0.06);
+    gap: 0;
+}
+
+.tab-slider {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+    width: 58px; /* Hardware slider thumb width */
+    background: var(--casing-bg);
+    border-radius: 17px;
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.8) inset, 
+        0 2px 4px rgba(0,0,0,0.15); /* Hardware button pop */
+    border: 1px solid rgba(0,0,0,0.15);
+    transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1); /* Quick momentum physics */
+    z-index: 1;
 }
 
 .filter-tab {
-    background: var(--inset-bg);
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 
-        inset 1px 1px 3px rgba(0,0,0,0.1),
-        inset -1px -1px 3px rgba(255,255,255,0.4),
-        0 1px 0 rgba(255, 255, 255, 0.4);
-    padding: 4px 12px;
+    position: relative;
+    z-index: 2; /* Always above the sliding thumb */
+    width: 58px; /* Fixed width to match thumb */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 4px 0; /* Slim down height */
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 9px; /* Accommodate smaller width cleanly */
     font-weight: 700;
     color: var(--text-label);
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 6px;
     border-radius: 20px;
-    transition: all 0.2s;
+    transition: color 0.3s;
     outline: none;
 }
 
 .filter-tab:hover {
     color: var(--text-main);
-    background: #dcdcd5;
 }
 
 .filter-tab.active {
-    background: var(--casing-bg);
     color: var(--text-main);
-    border-color: rgba(0,0,0,0.15);
-    box-shadow: 
-        0 1px 0 rgba(255,255,255,0.8) inset, 
-        0 2px 4px rgba(0,0,0,0.1); /* Hardware button pop */
+    background: transparent;
+    box-shadow: none;
+    border-color: transparent;
 }
 
 /* Raised Circular Item Count Badge (Glass Bead Style) */

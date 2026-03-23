@@ -41,10 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Events ──
     const filterTabs = document.querySelectorAll('.filter-tab');
-    filterTabs.forEach(tab => {
+    const tabSlider = document.getElementById('tabSlider');
+
+    filterTabs.forEach((tab, index) => {
         tab.addEventListener('click', () => {
             filterTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
+            
+            // Slide the physical thumb underlying the tabs
+            if (tabSlider) {
+                tabSlider.style.transform = `translateX(${index * 58}px)`;
+            }
+
             currentHistoryFilter = tab.dataset.filter;
             applyHistoryFilter();
         });
