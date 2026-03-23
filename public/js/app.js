@@ -218,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Update progress bar segments
                 const pct = Math.min((worked / normalHours) * 100, 100);
+                progressFill.setAttribute('aria-valuenow', Math.round(pct));
                 updateProgressSegments(pct);
 
                 // Active pulse when clocked in
@@ -578,6 +579,19 @@ document.addEventListener('DOMContentLoaded', () => {
             sel: '[data-panel="activity"]',
             title: 'EVENT LOG',
             text: 'Every single event is logged here. Use the filter tabs to sort your activity.'
+        },
+        {
+            sel: '#startTourBtn',
+            title: 'KEYBOARD SHORTCUTS',
+            html: true,
+            text: '<div class="kbd-grid">'
+                + '<span><kbd>I</kbd> Clock In</span>'
+                + '<span><kbd>O</kbd> Clock Out</span>'
+                + '<span><kbd>R</kbd> Refresh</span>'
+                + '<span><kbd>H</kbd> Open Guide</span>'
+                + '<span><kbd>Esc</kbd> Dismiss</span>'
+                + '<span><kbd>←</kbd> <kbd>→</kbd> Navigate Tour</span>'
+                + '</div>'
         }
     ];
 
@@ -589,9 +603,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let top = elRect.bottom + 16;
         let left = elRect.left + (elRect.width / 2) - 160;
         
-        // Adjust vertically for last step to be INSIDE the panel at bottom
-        if (stepIndex === tourSteps.length - 1) {
+        // Position tooltip INSIDE tall panels (activity) to avoid cutoff
+        const step = tourSteps[stepIndex];
+        if (step && step.sel === '[data-panel="activity"]') {
             top = elRect.bottom - 160 - 24; 
+        } else if (step && step.sel === '#startTourBtn') {
+            // Floating button is fixed at bottom-left — tooltip goes above it
+            top = elRect.top - 210;
+            left = elRect.left;
         } else if (top + 150 > window.innerHeight) {
             top = elRect.top - 180;
         }
@@ -628,7 +647,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         tourTitle.textContent = step.title;
         tourStepIndicator.textContent = `${index + 1}/${tourSteps.length}`;
-        tourContent.textContent = step.text;
+        if (step.html) {
+            tourContent.innerHTML = step.text;
+        } else {
+            tourContent.textContent = step.text;
+        }
         
         tourSpotlight.classList.add('active');
         tourTooltip.classList.add('active');
@@ -637,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
         posTooltip(rect, index);
         
         tourPrevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
-        tourNextBtn.textContent = index === tourSteps.length - 1 ? 'FINISH' : 'NEXT';
+        tourNextBtn.innerHTML = index === tourSteps.length - 1 ? 'FINISH <kbd>→</kbd>' : 'NEXT <kbd>→</kbd>';
     }
 
     // ── Tour persistence helpers ──
@@ -687,4 +710,45 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // ── KEYBOARD SHORTCUTS ──
+    document.addEventListener('keydown', (e) => {
+        // Ignore when typing in an input/textarea
+        const tag = (e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+
+        // Tour-specific shortcuts (always active when tour is open)
+        if (tourActive) {
+            if (e.key === 'Escape') { e.preventDefault(); endTour(); return; }
+            if (e.key === 'ArrowRight') { e.preventDefault(); currentTourStep++; showTourStep(currentTourStep); return; }
+            if (e.key === 'ArrowLeft')  { e.preventDefault(); currentTourStep--; showTourStep(currentTourStep); return; }
+        }
+
+        // Global shortcuts
+        switch (e.key.toLowerCase()) {
+            case 'i':
+                e.preventDefault();
+                handleClockAction('IN');
+                break;
+            case 'o':
+                e.preventDefault();
+                handleClockAction('OUT');
+                break;
+            case 'r':
+                e.preventDefault();
+                animatePress(refreshBtn);
+                fetchStatus();
+                fetchHistory();
+                fetchTodaySummary();
+                break;
+            case 'h':
+                e.preventDefault();
+                if (!tourActive) { currentTourStep = 0; showTourStep(0); }
+                break;
+            case 'escape':
+                // Close feedback toast if visible
+                document.getElementById('actionFeedback')?.classList.remove('show');
+                break;
+        }
+    });
 });

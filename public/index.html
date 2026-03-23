@@ -49,7 +49,7 @@
 
         <!-- Status Panel -->
         <div class="rim printer-housing" data-panel="status">
-            <div id="actionFeedback" class="printer-slip">
+            <div id="actionFeedback" class="printer-slip" role="status" aria-live="polite">
                 <div class="printer-paper">
                     <div id="feedbackText">SYSTEM READY</div>
                     <div class="tear-edge"></div>
@@ -137,7 +137,7 @@
                             <span class="progress-label">HOURS WORKED</span>
                             <span class="progress-value"><span id="totalHours">0.0</span>H / <span id="targetHours">8</span>H</span>
                         </div>
-                        <div class="progress-track" id="progressFill">
+                        <div class="progress-track" id="progressFill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Hours worked progress">
                             <div class="progress-segment"></div>
                             <div class="progress-segment"></div>
                             <div class="progress-segment"></div>
@@ -226,7 +226,7 @@
     <footer class="system-footer">
         <div class="footer-inner">
             <div class="sys-status-group">
-                <div id="healthDot" class="health-dot"></div>
+                <div id="healthDot" class="health-dot" role="status" aria-live="polite"></div>
                 <span class="sys-label">SYSTEM DIAGNOSTIC:</span>
                 <span id="healthText" class="sys-value">INITIALIZING...</span>
             </div>
@@ -243,7 +243,7 @@
 
     <!-- ONBOARDING TOUR OVERLAY -->
     <div class="tour-spotlight" id="tourSpotlight"></div>
-    <div class="tour-tooltip" id="tourTooltip">
+    <div class="tour-tooltip" id="tourTooltip" role="dialog" aria-label="Onboarding walkthrough">
         <div class="tour-header">
             <span class="tour-title control-label" id="tourTitle">TOUR TITLE</span>
             <span class="tour-step model-number" id="tourStepIndicator">1/5</span>
@@ -252,10 +252,10 @@
             This is where the description goes.
         </div>
         <div class="tour-footer">
-            <button class="action-btn" id="tourSkipBtn" style="font-size: 9px; padding: 4px 8px; background: rgba(0,0,0,0.05); color: var(--text-muted); box-shadow: none;">SKIP</button>
+            <button class="action-btn" id="tourSkipBtn" style="font-size: 9px; padding: 4px 8px; background: rgba(0,0,0,0.05); color: var(--text-muted); box-shadow: none;"><kbd>Esc</kbd> SKIP</button>
             <div style="display:flex; gap: 8px;">
-                <button class="action-btn" id="tourPrevBtn" style="font-size: 9px; padding: 4px 8px;">PREV</button>
-                <button class="action-btn" id="tourNextBtn" style="font-size: 9px; padding: 4px 8px;">NEXT</button>
+                <button class="action-btn" id="tourPrevBtn" style="font-size: 9px; padding: 4px 8px;"><kbd>←</kbd> PREV</button>
+                <button class="action-btn" id="tourNextBtn" style="font-size: 9px; padding: 4px 8px;">NEXT <kbd>→</kbd></button>
             </div>
         </div>
     </div>
