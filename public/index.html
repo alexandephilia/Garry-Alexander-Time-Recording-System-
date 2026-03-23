@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Time System — Attendance Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>rgba(255, 255, 255, 0.784),
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -232,6 +232,33 @@
             </div>
         </div>
     </footer>
+
+    <!-- FLOATING TOUR BUTTON -->
+    <button id="startTourBtn" class="tour-btn-floating" title="Restart Walkthrough">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span class="control-label" style="margin:0; letter-spacing: 0.1em;">Help</span>
+    </button>
+
+    <!-- ONBOARDING TOUR OVERLAY -->
+    <div class="tour-spotlight" id="tourSpotlight"></div>
+    <div class="tour-tooltip" id="tourTooltip">
+        <div class="tour-header">
+            <span class="tour-title control-label" id="tourTitle">TOUR TITLE</span>
+            <span class="tour-step model-number" id="tourStepIndicator">1/5</span>
+        </div>
+        <div class="tour-body" id="tourContent">
+            This is where the description goes.
+        </div>
+        <div class="tour-footer">
+            <button class="action-btn" id="tourSkipBtn" style="font-size: 9px; padding: 4px 8px; background: rgba(0,0,0,0.05); color: var(--text-muted); box-shadow: none;">SKIP</button>
+            <div style="display:flex; gap: 8px;">
+                <button class="action-btn" id="tourPrevBtn" style="font-size: 9px; padding: 4px 8px;">PREV</button>
+                <button class="action-btn" id="tourNextBtn" style="font-size: 9px; padding: 4px 8px;">NEXT</button>
+            </div>
+        </div>
+    </div>
 
 <script src="/js/app.js"></script>
 </body>

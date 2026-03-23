@@ -521,4 +521,118 @@ document.addEventListener('DOMContentLoaded', () => {
     // Draw after layout settles
     setTimeout(drawConnectors, 100);
     window.addEventListener('resize', drawConnectors);
+    // ── ONBOARDING TOUR ──
+    const startTourBtn = document.getElementById('startTourBtn');
+    const tourSpotlight = document.getElementById('tourSpotlight');
+    const tourTooltip = document.getElementById('tourTooltip');
+    const tourTitle = document.getElementById('tourTitle');
+    const tourStepIndicator = document.getElementById('tourStepIndicator');
+    const tourContent = document.getElementById('tourContent');
+    const tourSkipBtn = document.getElementById('tourSkipBtn');
+    const tourPrevBtn = document.getElementById('tourPrevBtn');
+    const tourNextBtn = document.getElementById('tourNextBtn');
+
+    const tourSteps = [
+        {
+            sel: '[data-panel="status"]',
+            title: 'SYSTEM STATUS',
+            text: 'Here is your live time and status indicator. Tells you if you are clocked in or out.'
+        },
+        {
+            sel: '[data-panel="controls"]',
+            title: 'HARDWARE BUTTONS',
+            text: 'Use these buttons to clock in or out. Please ensure you only press once.'
+        },
+        {
+            sel: '[data-panel="summary"]',
+            title: 'DAILY SUMMARY',
+            text: 'Your total hours and overtime for the day. Watch the progress bar fill up while you grind.'
+        },
+        {
+            sel: '[data-panel="activity"]',
+            title: 'EVENT LOG',
+            text: 'Every single event is logged here. Use the filter tabs to sort your activity.'
+        }
+    ];
+
+    let currentTourStep = 0;
+    let activeTourElement = null;
+
+    function posTooltip(elRect, stepIndex) {
+        let top = elRect.bottom + 16;
+        let left = elRect.left + (elRect.width / 2) - 160;
+        
+        // Adjust vertically for last step to be INSIDE the panel at bottom
+        if (stepIndex === tourSteps.length - 1) {
+            top = elRect.bottom - 160 - 24; 
+        } else if (top + 150 > window.innerHeight) {
+            top = elRect.top - 180;
+        }
+        if (left < 10) left = 10;
+        if (left + 330 > window.innerWidth) left = window.innerWidth - 340;
+
+        tourTooltip.style.top = `${top}px`;
+        tourTooltip.style.left = `${left}px`;
+        
+        tourSpotlight.style.top = `${elRect.top - 8}px`;
+        tourSpotlight.style.left = `${elRect.left - 8}px`;
+        tourSpotlight.style.width = `${elRect.width + 16}px`;
+        tourSpotlight.style.height = `${elRect.height + 16}px`;
+    }
+
+    function showTourStep(index) {
+        if (activeTourElement) activeTourElement.classList.remove('tour-element-active');
+        
+        if (index < 0 || index >= tourSteps.length) {
+            endTour();
+            return;
+        }
+        
+        const step = tourSteps[index];
+        activeTourElement = document.querySelector(step.sel);
+        
+        if (!activeTourElement) {
+            endTour();
+            return;
+        }
+        
+        activeTourElement.classList.add('tour-element-active');
+        
+        tourTitle.textContent = step.title;
+        tourStepIndicator.textContent = `${index + 1}/${tourSteps.length}`;
+        tourContent.textContent = step.text;
+        
+        tourSpotlight.classList.add('active');
+        tourTooltip.classList.add('active');
+        
+        const rect = activeTourElement.getBoundingClientRect();
+        posTooltip(rect, index);
+        
+        tourPrevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
+        tourNextBtn.textContent = index === tourSteps.length - 1 ? 'FINISH' : 'NEXT';
+    }
+
+    function endTour() {
+        if (activeTourElement) activeTourElement.classList.remove('tour-element-active');
+        activeTourElement = null;
+        tourSpotlight.classList.remove('active');
+        tourTooltip.classList.remove('active');
+        localStorage.setItem('tourSeen', '1');
+    }
+
+    tourNextBtn.addEventListener('click', () => { currentTourStep++; showTourStep(currentTourStep); });
+    tourPrevBtn.addEventListener('click', () => { currentTourStep--; showTourStep(currentTourStep); });
+    tourSkipBtn.addEventListener('click', endTour);
+
+    if (startTourBtn) {
+        startTourBtn.addEventListener('click', () => {
+            currentTourStep = 0;
+            showTourStep(0);
+        });
+    }
+
+    // Auto-trigger if first load
+    if (!localStorage.getItem('tourSeen')) {
+        setTimeout(() => showTourStep(0), 600);
+    }
 });
