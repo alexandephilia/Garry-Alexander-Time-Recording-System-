@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_BASE = '/api';
 
     // ── Init ──
-    fetchStatus();
-    fetchHistory();
-    fetchTodaySummary();
+    const initStatus = fetchStatus();
+    const initHistory = fetchHistory();
+    const initSummary = fetchTodaySummary();
     updateLiveClock();
     setInterval(updateLiveClock, 1000);
     updateSummaryDate();
@@ -583,6 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentTourStep = 0;
     let activeTourElement = null;
+    let tourActive = false;
 
     function posTooltip(elRect, stepIndex) {
         let top = elRect.bottom + 16;
@@ -613,6 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
             endTour();
             return;
         }
+        tourActive = true;
         
         const step = tourSteps[index];
         activeTourElement = document.querySelector(step.sel);
@@ -638,12 +640,29 @@ document.addEventListener('DOMContentLoaded', () => {
         tourNextBtn.textContent = index === tourSteps.length - 1 ? 'FINISH' : 'NEXT';
     }
 
+    // ── Tour persistence helpers ──
+    // Store in BOTH localStorage AND a cookie so clearing one doesn't re-trigger.
+    function setTourSeen() {
+        try { localStorage.setItem('tourSeen', '1'); } catch (_) {}
+        const secure = location.protocol === 'https:' ? '; Secure' : '';
+        document.cookie = `tourSeen=1; path=/; max-age=31536000; SameSite=Lax${secure}`;
+    }
+
+    function hasTourBeenSeen() {
+        // Check localStorage first
+        try { if (localStorage.getItem('tourSeen')) return true; } catch (_) {}
+        // Fallback: check cookie
+        if (document.cookie.split('; ').some(c => c.startsWith('tourSeen='))) return true;
+        return false;
+    }
+
     function endTour() {
         if (activeTourElement) activeTourElement.classList.remove('tour-element-active');
         activeTourElement = null;
+        tourActive = false;
         tourSpotlight.classList.remove('active');
         tourTooltip.classList.remove('active');
-        localStorage.setItem('tourSeen', '1');
+        setTourSeen();
     }
 
     tourNextBtn.addEventListener('click', () => { currentTourStep++; showTourStep(currentTourStep); });
@@ -652,13 +671,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (startTourBtn) {
         startTourBtn.addEventListener('click', () => {
+            if (tourActive) return; // Prevent double-firing
             currentTourStep = 0;
             showTourStep(0);
         });
     }
 
-    // Auto-trigger if first load
-    if (!localStorage.getItem('tourSeen')) {
-        setTimeout(() => showTourStep(0), 600);
+    // Auto-trigger on genuinely first visit.
+    // Wait for all API data to load so panels are properly sized before spotlighting.
+    if (!hasTourBeenSeen()) {
+        Promise.allSettled([initStatus, initHistory, initSummary]).then(() => {
+            if (tourActive) return; // Manual trigger already started it
+            // Extra frame to let the browser paint the fetched data
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (tourActive) return;
+                    showTourStep(0);
+                });
+            });
+        });
     }
 });
