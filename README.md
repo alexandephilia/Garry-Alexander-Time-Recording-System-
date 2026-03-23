@@ -69,7 +69,7 @@ tests/
 
 ## Frontend Dashboard
 
-The dashboard UI is a **fully custom skeuomorphic design** — no frameworks, no component libraries — built with vanilla HTML, CSS, and JavaScript. Every element is crafted to look and feel like a physical piece of premium industrial hardware.
+The dashboard UI is a **fully custom skeuomorphic design** no frameworks, no component libraries. Built with vanilla HTML, CSS, and JavaScript. Every element is crafted to look and feel like a physical piece of premium industrial hardware.
 
 ### Design Language
 
@@ -90,6 +90,88 @@ The dashboard UI is a **fully custom skeuomorphic design** — no frameworks, no
 - **Recent Activity**: Filterable event log with IN/OUT/ALL tabs, date grouping, and total count footer
 - **System Health**: Live diagnostic indicator polling `/api/health`
 - **Panel Connectors**: Dynamically drawn SVG traces that bridge panels, responsive to layout changes
+
+### Dashboard Component Hierarchy
+
+```mermaid
+graph TD
+    A["index.html"] --> B["Navbar"]
+    A --> C["Dashboard (main)"]
+    A --> D["System Footer"]
+
+    B --> B1["Brand Panel"]
+    B --> B2["User Profile Panel"]
+
+    C --> E["Left Column"]
+    C --> F["Right Column"]
+    C --> G["Connector Layer (SVG)"]
+
+    E --> E1["Status Panel"]
+    E --> E2["Clock Controls Panel"]
+    E --> E3["Today's Summary Panel"]
+
+    F --> F1["Recent Activity Panel"]
+
+    E1 --> E1a["Receipt Printer Slip"]
+    E1 --> E1b["Live Clock LCD"]
+    E1 --> E1c["Since Timer"]
+
+    E2 --> E2a["Clock In Button"]
+    E2 --> E2b["Clock Out Button"]
+
+    E3 --> E3a["Progress Bar (16 segments)"]
+    E3 --> E3b["Overtime Indicator"]
+
+    F1 --> F1a["Filter Tabs (ALL / IN / OUT)"]
+    F1 --> F1b["Event Table with Date Groups"]
+    F1 --> F1c["Footer Count"]
+
+    D --> D1["Health Dot + Diagnostic Text"]
+
+    G --> G1["Status-to-Controls Trace"]
+    G --> G2["Controls-to-Summary Trace"]
+    G --> G3["Controls-to-Activity Bridge"]
+    G --> G4["Activity-to-Profile Trace"]
+
+    style A fill:#1a1a2e,stroke:#e94560,color:#eee
+    style C fill:#16213e,stroke:#0f3460,color:#eee
+    style E fill:#1a1a2e,stroke:#533483,color:#eee
+    style F fill:#1a1a2e,stroke:#533483,color:#eee
+    style G fill:#0f3460,stroke:#e94560,color:#eee
+```
+
+### Frontend Data Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as Dashboard (app.js)
+    participant API as Express API
+
+    Note over UI: Page Load
+    UI->>API: GET /api/clock/status/:userId
+    API-->>UI: { status, since }
+    UI->>API: GET /api/events?userId&page&limit
+    API-->>UI: { events[], total, page }
+    UI->>API: GET /api/report?userId&start&end
+    API-->>UI: { daily[], totals }
+    UI->>API: GET /api/health
+    API-->>UI: { status: "ok" }
+
+    Note over UI: Every 1s: Live Clock tick
+    Note over UI: Every 30s: Health check
+
+    U->>UI: Click "Clock In"
+    UI->>API: POST /api/clock { userId, type: "IN" }
+    API-->>UI: 201 Created
+    UI->>UI: Receipt printer animation
+    UI->>API: GET /api/clock/status/:userId
+    UI->>API: GET /api/events?userId&page&limit
+    UI->>API: GET /api/report?userId&start&end
+
+    U->>UI: Click filter tab (IN/OUT/ALL)
+    UI->>UI: Client-side filter + re-render
+```
 
 ---
 
@@ -162,7 +244,7 @@ The server starts at `http://localhost:3000`.
 > - **Clock In / Clock Out** using the hardware-style buttons
 > - **View real-time status** and live session duration
 > - **Browse and filter** the full history of clock events (ALL / IN / OUT tabs)
-> - **See today's progress** — hours worked vs. target, with overtime indicator
+> - **See today's progress** - hours worked vs. target, with overtime indicator
 
 ---
 
