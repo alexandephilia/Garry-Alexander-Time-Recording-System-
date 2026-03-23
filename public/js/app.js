@@ -566,7 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             sel: '[data-panel="controls"]',
-            title: 'HARDWARE BUTTONS',
+            title: 'CLOCKING IN & OUT',
             text: 'Use these buttons to clock in or out. Please ensure you only press once.'
         },
         {
