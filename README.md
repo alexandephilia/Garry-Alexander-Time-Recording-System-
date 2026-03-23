@@ -4,7 +4,7 @@
 <br />
 [![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?logo=claude&logoColor=fff)](#)
 
-A concurrency-safe time-recording REST API with a **skeuomorphic dashboard**, built with **Node.js**, **TypeScript**, **Express v5**, **Prisma ORM**, and **SQLite**.
+A concurrency-safe time-recording REST API with a **simple dashboard**, built with **Node.js**, **TypeScript**, **Express v5**, **Prisma ORM**, and **SQLite**.
 
 ## Table of Contents
 
@@ -158,6 +158,7 @@ npm run dev
 The server starts at `http://localhost:3000`.
 
 > **Dashboard:** Open **[http://localhost:3000](http://localhost:3000)** in your browser to access the interactive attendance dashboard. From there you can:
+>
 > - **Clock In / Clock Out** using the hardware-style buttons
 > - **View real-time status** and live session duration
 > - **Browse and filter** the full history of clock events (ALL / IN / OUT tabs)
