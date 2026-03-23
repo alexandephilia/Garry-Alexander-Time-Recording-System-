@@ -1388,7 +1388,9 @@ body {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
     font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: .12em;
+    text-shadow: 0 1px #ffffffa6;
     cursor: pointer;
     padding: 7px 12px; /* Compact structural proportion */
     margin: 3px; /* Offset to absorb the outer socket radius visually */
@@ -1403,9 +1405,9 @@ body {
     border: 1px solid var(--c-mid-dark);
     border-radius: var(--btn-radius);
     box-shadow: 
-        inset 2.5px 2.5px 0 rgba(255, 255, 255, 0.784),
-        inset -2.5px -2.5px 0 rgba(0,0,0,0.03),
-        0 3px 6px rgba(0,0,0,0.06);
+        inset 2.5px 2.5px 0 rgba(255, 255, 255, 0.89),  /* Light hitting Top & Left */
+        inset -2.5px -2.5px 0 rgba(0, 0, 0, 0.05),       /* Shadow on Bottom & Right */
+        0 3px 6px rgba(0, 0, 0, 0.06);
 }
 
 .action-btn::before {
