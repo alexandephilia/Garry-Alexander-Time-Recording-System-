@@ -641,18 +641,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Tour persistence helpers ──
-    // Store in BOTH localStorage AND a cookie so clearing one doesn't re-trigger.
+    // Abstracted so persistence strategy can be swapped
+    // (e.g. server-side flag, cookie) without touching call sites.
     function setTourSeen() {
         try { localStorage.setItem('tourSeen', '1'); } catch (_) {}
-        const secure = location.protocol === 'https:' ? '; Secure' : '';
-        document.cookie = `tourSeen=1; path=/; max-age=31536000; SameSite=Lax${secure}`;
     }
 
     function hasTourBeenSeen() {
-        // Check localStorage first
-        try { if (localStorage.getItem('tourSeen')) return true; } catch (_) {}
-        // Fallback: check cookie
-        if (document.cookie.split('; ').some(c => c.startsWith('tourSeen='))) return true;
+        try { return !!localStorage.getItem('tourSeen'); } catch (_) {}
         return false;
     }
 
