@@ -519,6 +519,7 @@ body {
     font-size: 32px;
     font-weight: 700;
     color: var(--lcd-text);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
 }
 
 .live-clock-sep {
@@ -526,8 +527,14 @@ body {
     font-size: 32px;
     font-weight: 700;
     color: var(--lcd-text);
-    opacity: 0.5;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
     margin: 0 1px;
+    animation: casio-ghost-blink 1s step-end infinite;
+}
+
+@keyframes casio-ghost-blink {
+    0%, 100% { color: var(--lcd-text); }
+    50% { color: var(--lcd-text-dim); }
 }
 
 .live-clock-sec {
@@ -535,6 +542,7 @@ body {
     font-size: 16px;
     font-weight: 500;
     color: var(--lcd-text);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
     opacity: 0.5;
 }
 
@@ -543,6 +551,7 @@ body {
     font-size: 10px;
     font-weight: 700;
     color: var(--lcd-text);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
     opacity: 0.5;
     text-align: center;
     padding-bottom: 10px;
@@ -616,7 +625,7 @@ body {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     font-weight: 800;
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
 }
 
 /* Feedback */
@@ -889,6 +898,7 @@ body {
         inset 0 -2px 4px rgba(255,255,255,0.2); /* Internal light bounce */
     transition: all 0.2s;
     z-index: 1;
+    
 }
 
 .hardware-btn.clock-btn-out .btn-cap::before {
@@ -1003,6 +1013,7 @@ body {
     font-size: 9px;
     font-weight: 700;
     color: var(--lcd-text);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
     opacity: 0.5;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -1013,6 +1024,7 @@ body {
     font-size: 14px;
     font-weight: 700;
     color: var(--lcd-text);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
     letter-spacing: 0.04em;
 }
 
@@ -1055,6 +1067,7 @@ body {
     font-size: 9px;
     font-weight: 700;
     color: var(--lcd-text);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
     opacity: 0.5;
     text-transform: uppercase;
     letter-spacing: 0.06em;
