@@ -28,7 +28,7 @@ app.use(
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per window
+    max: 1000, // limit each IP to 1000 requests per window (relaxed for dev)
     standardHeaders: true,
     legacyHeaders: false,
     message: { error: "Too many requests, please try again later." },
@@ -52,8 +52,11 @@ app.use("/api/events", eventsRoutes);
 app.use("/api/report", reportRoutes);
 app.use("/api/users", usersRoutes);
 
-// Health check
-app.get("/", (_req, res) => {
+// Serve static frontend files
+app.use(express.static("public"));
+
+// Health check moved to /api/health
+app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", service: "time-recording-system" });
 });
 

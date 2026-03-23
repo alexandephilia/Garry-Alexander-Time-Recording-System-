@@ -13,15 +13,15 @@ async function main() {
     },
   });
 
-  // Seed work rules (0=Sun, 6=Sat)
+  // Seed work rules: Mon-Fri 9AM-6PM (0=Sun, 6=Sat)
   const rules = [
-    { dayOfWeek: 0, isWorkingDay: false, normalHours: 0 },
-    { dayOfWeek: 1, isWorkingDay: true, normalHours: 8 },
-    { dayOfWeek: 2, isWorkingDay: true, normalHours: 8 },
-    { dayOfWeek: 3, isWorkingDay: true, normalHours: 8 },
-    { dayOfWeek: 4, isWorkingDay: true, normalHours: 8 },
-    { dayOfWeek: 5, isWorkingDay: true, normalHours: 8 },
-    { dayOfWeek: 6, isWorkingDay: false, normalHours: 0 },
+    { dayOfWeek: 0, isWorkingDay: false, normalHours: 0, startTime: '00:00', endTime: '00:00' },
+    { dayOfWeek: 1, isWorkingDay: true, normalHours: 8, startTime: '09:00', endTime: '18:00' },
+    { dayOfWeek: 2, isWorkingDay: true, normalHours: 8, startTime: '09:00', endTime: '18:00' },
+    { dayOfWeek: 3, isWorkingDay: true, normalHours: 8, startTime: '09:00', endTime: '18:00' },
+    { dayOfWeek: 4, isWorkingDay: true, normalHours: 8, startTime: '09:00', endTime: '18:00' },
+    { dayOfWeek: 5, isWorkingDay: true, normalHours: 8, startTime: '09:00', endTime: '18:00' },
+    { dayOfWeek: 6, isWorkingDay: false, normalHours: 0, startTime: '00:00', endTime: '00:00' },
   ];
 
   for (const rule of rules) {

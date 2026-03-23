@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time System — Attendance Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+    <div class="rim rim-compact">
+        <div class="rim-inner nav-content nav-brand-content">
+            <div class="nav-icon-raised">
+                <svg class="nav-icon-svg" viewBox="0 0 640 640" style="fill: currentColor; width: 16px; height: 16px; opacity: 0.75;">
+                    <path d="M322.5 351.7L523.4 150.9L391 520.3L322.5 351.7zM489.4 117L288.6 317.8L120 249.3L489.4 117zM70.1 280.8L275.9 364.4L359.5 570.2C364.8 583.3 377.6 591.9 391.8 591.9C406.5 591.9 419.6 582.7 424.6 568.8L602.6 72C606.1 62.2 603.6 51.4 596.3 44C589 36.6 578.1 34.2 568.3 37.7L71.4 215.7C57.5 220.7 48.3 233.8 48.3 248.5C48.3 262.7 56.9 275.5 70 280.8z"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <span class="brand">Time System</span>
+                <span class="model-number">ATT-01</span>
+            </div>
+        </div>
+    </div>
+    <div class="rim rim-compact" data-panel="userprofile">
+        <div class="rim-inner nav-content">
+            <div class="user-meta">
+                <span class="user-name">Garry Alexander</span>
+                <span class="model-number">JLG-001</span>
+            </div>
+            <div class="nav-icon-raised">
+                <svg class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ═══ DASHBOARD ═══ -->
+<main class="dashboard">
+
+    <!-- LEFT COLUMN -->
+    <div class="dashboard-col left-col">
+
+        <!-- Status Panel -->
+        <div class="rim printer-housing" data-panel="status">
+            <div id="actionFeedback" class="printer-slip">
+                <div class="printer-paper">
+                    <div id="feedbackText">SYSTEM READY</div>
+                    <div class="tear-edge"></div>
+                </div>
+            </div>
+            <div class="rim-inner card-surface" style="position: relative; z-index: 2;">
+                <div class="status-top-row">
+                    <div class="status-badge">
+                        <div id="statusIndicator" class="status-dot"></div>
+                        <span id="statusText" class="status-label">Loading...</span>
+                    </div>
+                    <span class="control-label">JustLogin</span>
+                </div>
+                <div class="lcd-screen">
+                    <div class="live-clock-row">
+                        <span id="liveHour" class="live-clock-text">00</span>
+                        <span class="live-clock-sep">:</span>
+                        <span id="liveMinute" class="live-clock-text">00</span>
+                        <span id="liveSeconds" class="live-clock-sec">:00</span>
+                    </div>
+                    <div id="liveDate" class="live-date-lcd">--</div>
+                </div>
+                <div class="panel-divider"></div>
+                <div class="since-row">
+                    <span class="since-label">SINCE</span>
+                    <div class="since-lcd">
+                        <span id="statusTime" class="since-value">--:--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clock Controls -->
+        <div class="rim" data-panel="controls">
+            <div class="rim-inner card-surface">
+                <div class="panel-label-row">
+                    <span class="control-label panel-label">CLOCK CONTROLS</span>
+                </div>
+                <div class="controls-row">
+                    <!-- Left group -->
+                    <div class="control-group">
+                        <div class="control-inline">
+                            <button class="hardware-btn clock-btn-in" id="clockInBtn" aria-label="Clock In">
+                                <div class="btn-well"><div class="btn-cap">
+                                    <svg class="btn-icon clock-in-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+                                    </svg>
+                                </div></div>
+                            </button>
+                            <span class="control-label">IN-01</span>
+                        </div>
+                        <span class="btn-name">Clock In</span>
+                    </div>
+                    <!-- Divider -->
+                    <div class="controls-divider"></div>
+                    <!-- Right group -->
+                    <div class="control-group">
+                        <div class="control-inline">
+                            <button class="hardware-btn clock-btn-out" id="clockOutBtn" aria-label="Clock Out">
+                                <div class="btn-well"><div class="btn-cap">
+                                    <svg class="btn-icon clock-out-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                    </svg>
+                                </div></div>
+                            </button>
+                            <span class="control-label">OUT-00</span>
+                        </div>
+                        <span class="btn-name">Clock Out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Summary -->
+        <div class="rim" data-panel="summary">
+            <div class="rim-inner card-surface">
+                <div class="panel-label-row">
+                    <span class="control-label panel-label">TODAY'S SUMMARY</span>
+                    <span class="model-number" id="summaryDate">--</span>
+                </div>
+                <div class="lcd-screen summary-lcd">
+                    <!-- Progress Bar -->
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label">HOURS WORKED</span>
+                            <span class="progress-value"><span id="totalHours">0.0</span>H / <span id="targetHours">8</span>H</span>
+                        </div>
+                        <div class="progress-track" id="progressFill">
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                            <div class="progress-segment"></div>
+                        </div>
+                        <div class="progress-footer">
+                            <span class="progress-detail" id="overtimeLabel">--</span>
+                            <span class="progress-detail"><span id="totalEvents">0</span> EVENTS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="dashboard-col right-col">
+        <div class="rim rim-stretch" data-panel="activity">
+            <div class="rim-inner card-surface card-surface-flush rim-inner-stretch">
+                <div class="panel-label-row" style="padding: 0 28px;">
+                    <span class="control-label panel-label">RECENT ACTIVITY</span>
+                    <button id="refreshBtn" class="action-btn">REFRESH</button>
+                </div>
+                <div class="panel-divider"></div>
+                <div class="filter-tabs-container" style="padding: 10px 28px 0px;">
+                    <button class="filter-tab active" data-filter="ALL">ALL <span class="tab-count" id="countAll">0</span></button>
+                    <button class="filter-tab" data-filter="IN">IN <span class="tab-count" id="countIn">0</span></button>
+                    <button class="filter-tab" data-filter="OUT">OUT <span class="tab-count" id="countOut">0</span></button>
+                </div>
+                <div class="table-header-wrap" style="padding: 0 28px; margin-top: 10px;">
+                    <table class="data-table" style="margin-bottom: 0;">
+                        <thead>
+                            <tr>
+                                <th><div class="th-content justify-start"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path></svg>TYPE</div></th>
+                                <th style="text-align: center;"><div class="th-content justify-center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>STATUS</div></th>
+                                <th style="text-align: right;"><div class="th-content justify-end"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>TIME</div></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="table-wrap">
+                    <table class="data-table" style="margin-top: 0;">
+                        <tbody id="historyList">
+                            <tr><td colspan="3" class="loading-state">Loading history...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer-row" style="position: relative; z-index: 10; background: var(--casing-bg); padding: 8px 28px; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 0; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 7px 7px; box-shadow: 0 -4px 12px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.8);">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-label); opacity: 0.8;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span class="control-label" style="font-size: 9px; opacity: 0.9; letter-spacing: 0.08em; text-transform: uppercase;">SYSTEM EVENT LOG</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="control-label" style="font-size: 9px; opacity: 0.9; letter-spacing: 0.08em; text-transform: uppercase;">TOTAL</span>
+                        <div style="background: var(--inset-bg); padding: 0 6px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 4px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 1px 0 rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.05); min-width: 24px;">
+                            <span class="model-number" id="totalEventsLabel" style="font-size: 9px; margin: 0; letter-spacing: 0; color: var(--text-main); line-height: 1;">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL CONNECTORS (Drawn by JS) -->
+    <div id="connectorLayer"></div>
+
+</main>
+    
+    <!-- SYSTEM FOOTER -->
+    <footer class="system-footer">
+        <div class="footer-inner">
+            <div class="sys-status-group">
+                <div id="healthDot" class="health-dot"></div>
+                <span class="sys-label">SYSTEM DIAGNOSTIC:</span>
+                <span id="healthText" class="sys-value">INITIALIZING...</span>
+            </div>
+        </div>
+    </footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

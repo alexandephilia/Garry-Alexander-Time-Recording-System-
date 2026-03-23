@@ -1,0 +1,1532 @@
+@import url('https://fonts.googleapis.com/css2?family=Iosevka+Charon:wght@400;700&display=swap');
+
+:root {
+    --casing-bg: #E3E4DF;
+    --text-main: #1A1A1A;
+    --text-muted: #555555;
+    --text-label: #6A6B66;
+
+    --color-red: #D03027;     --shade-red: #9B1C15;
+    --color-green: #00853E;   --shade-green: #005B2A;
+    --color-white: #F4F4F2;   --shade-white: #BDBDBD;
+
+    --panel-gap-dark: rgba(0,0,0,0.15);
+    --panel-gap-light: rgba(255,255,255,0.8);
+
+    --inset-bg: #DADBD4;
+    --inset-shadow: inset 2px 2px 5px rgba(0,0,0,0.1), inset -2px -2px 4px rgba(255,255,255,0.7);
+
+    /* LCD / Casio display */
+    --lcd-bg: #BBC5AA;
+    --lcd-text: #2C3325;
+    --lcd-text-dim: rgba(44,51,37,0.25);
+    --lcd-shadow:
+        inset 2px 2px 6px rgba(0,0,0,0.25),
+        inset -1px -1px 3px rgba(255,255,255,0.15);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: #C8C9C4;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
+        linear-gradient(135deg, #dddddd 0%, #dddddd 40%, #dddddd 100%);
+    background-blend-mode: soft-light, normal;
+    background-attachment: fixed;
+    background-size: 80px 80px, cover;
+    min-height: 100vh;
+    font-family: 'Cabin', sans-serif;
+    color: var(--text-main);
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ═══════════════════════════════════
+   OUTER RIM
+   ═══════════════════════════════════ */
+.rim {
+    border-radius: 16px;
+    padding: 5px;
+    border: 1px solid rgba(0,0,0,0.07);
+    background: radial-gradient(
+        144% 100% at 50% 0%,
+        rgba(255,255,255,0.65) 0%,
+        rgba(220,221,216,0.8) 100%
+    );
+    box-shadow:
+        0 1.5px 0 0 rgba(255,255,255,1) inset,
+        0 2px 0 0 rgba(255,255,255,0.9) inset,
+        0 0 18px 0 rgba(255,255,255,0.5) inset,
+        0 1px 2px 0 rgba(0,0,0,0.06),
+        0 4px 12px 0 rgba(0,0,0,0.05);
+}
+
+.rim-compact {
+    padding: 3px;
+    border-radius: 13px;
+}
+
+.rim-stretch {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.rim-inner {
+    border-radius: 11px;
+    background-color: var(--casing-bg);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow:
+        0 1px 0 0 rgba(255,255,255,0.4) inset,
+        0 1px 4px 0 rgba(0,0,0,0.06);
+    overflow: hidden;
+    position: relative; /* Added for pseudo-layering */
+}
+
+/* Global Panel "Inner Chamber" Depth */
+.rim-inner::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1; /* Depth floor */
+    box-shadow: inset 1px 1.5px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+/* Global Panel "Surface Gloss" Layer */
+.rim-inner::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 3; /* Surface glare */
+}
+
+.rim-compact .rim-inner {
+    border-radius: 10px;
+}
+
+.rim-inner-stretch {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ═══════════════════════════════════
+   CARD SURFACES
+   ═══════════════════════════════════ */
+.card-surface {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 2; /* Sandwiched between Before and After layers */
+}
+
+.card-surface-flush {
+    padding: 20px 0 0 0;
+    gap: 0;
+}
+
+.nav-content {
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ═══════════════════════════════════
+   NAVBAR
+   ═══════════════════════════════════ */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+/* Raised nav icons — convex with highlight at top */
+.nav-icon-raised {
+    width: 34px;
+    height: 34px;
+    border-radius: 30%;
+    background-color: var(--casing-bg);
+    background-image: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.418) 40%,
+        rgba(0, 0, 0, 0.04) 100%
+    );
+    box-shadow:
+        0 1px 1px 0 rgba(255, 255, 255, 0.6) inset,
+        0 -1px 2px 0 rgba(0, 0, 0, 0.05) inset,
+        0 2px 4px rgba(0, 0, 0, 0.08),
+        0 4px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-top-color: rgba(255, 255, 255, 0.502);
+}
+
+.nav-icon-svg {
+    width: 15px;
+    height: 15px;
+    color: var(--text-muted);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.brand {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--text-main);
+    text-shadow: 0 1px #ffffffa6;
+}
+
+.model-number {
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    text-shadow: 0 1px #ffffffa6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+}
+
+.avatar-icon {
+    width: 17px;
+    height: 17px;
+    color: var(--text-main);
+    opacity: 0.75;
+    filter: drop-shadow(0 1px #ffffff80);
+}
+
+.user-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-main);
+    text-shadow: 0 1px #ffffffa6;
+}
+
+/* ═══════════════════════════════════
+   DASHBOARD GRID
+   ═══════════════════════════════════ */
+.dashboard {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    position: relative; /* Anchor for connectors */
+}
+
+/* ═══════════════════════════════════
+   PANEL CONNECTORS (Machined Harness)
+   ═══════════════════════════════════ */
+.panel-connector {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+}
+
+.connector-path {
+    fill: none;
+    stroke: rgba(181, 181, 181, 0.5); /* Dark groove — matches panel-divider */
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.connector-highlight {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.85); /* Specular reflection — matches panel-divider */
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.dashboard-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ═══════════════════════════════════
+   SHARED
+   ═══════════════════════════════════ */
+.panel-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.control-label {
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    text-shadow: 0 1px #ffffffa6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+}
+
+.panel-label {
+    font-size: 11px;
+}
+
+.panel-divider {
+    height: 2px;
+    width: 100%;
+    background: rgba(181, 181, 181, 0.412); /* The dark inner groove */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.85); /* The sharp specular reflection */
+    box-shadow: inset 0 1px 2px rgba(125, 125, 125, 0.1); /* Recessed depth */
+    margin-top: 12px;
+    border-radius: 1px; /* Slightly softens the cut edges */
+}
+
+/* ═══════════════════════════════════
+   LCD SCREEN — Casio digital look
+   ═══════════════════════════════════ */
+.lcd-screen {
+    background: var(--lcd-bg);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+
+    /* Machined Cutout & Screen Depth Layering */
+    box-shadow: 
+        /* Physical Housing Cut (Bezel) */
+        -1.5px -1.5px 2px rgba(0,0,0,0.15), /* Top/Left dark cut */
+        1.5px 1.5px 2.5px rgba(255,255,255,0.95), /* Bottom/Right sharp chamfer highlight */
+        
+        /* Internal Screen Depths (Recessed Glass) */
+        inset 5px 5px 6px rgba(0,0,0,0.22), /* Deep internal groove shadow */
+        inset -1px -1px 3px rgba(255,255,255,0.35), /* Glass edge highlight */
+        inset 0 0 16px rgba(0,0,0,0.08); /* Ambient screen center occlusion */
+}
+
+.lcd-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    border-radius: 6px;
+}
+
+/* ═══════════════════════════════════
+   STATUS PANEL
+   ═══════════════════════════════════ */
+.status-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: #d8d9d4; /* Deeply recessed casing floor */
+    border-radius: 20px;
+    
+    /* The "Outer Well" socket shadows */
+    box-shadow: 
+        inset 3px 3px 5px rgba(0, 0, 0, 0.15),
+        inset -1px -1px 3px rgba(255, 255, 255, 0.5),
+        0 1px 0 rgba(255, 255, 255, 0.8);
+    
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The "Inner Chamber" — adds a secondary layer of depth */
+.status-badge::before {
+    content: "";
+    position: absolute;
+    inset: 1.5px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(255, 255, 255, 0.15) 100%);
+    border-radius: 19px;
+    pointer-events: none;
+    z-index: 1; /* Sits behind the text */
+    box-shadow: inset 1px 1.5px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* The "Glass Shield" — adds the surface lacquer highlight */
+.status-badge::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 100%);
+    border-radius: 20px 20px 0 0;
+    pointer-events: none;
+    z-index: 3; /* Sits above the text */
+}
+
+.status-badge.badge-in::before {
+    background: linear-gradient(180deg, rgba(0, 133, 62, 0.08) 0%, rgba(0, 133, 62, 0.22) 100%);
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 133, 62, 0.147);
+}
+
+.status-badge.badge-out::before {
+    background: linear-gradient(180deg, rgba(208, 48, 39, 0.08) 0%, rgba(208, 48, 39, 0.22) 100%);
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(208, 47, 39, 0.133);
+}
+
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    /* Premium unlit glass bead effect: shine + base + backlight shadow */
+    background: 
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 25%),
+        radial-gradient(circle at 40% 30%, #8e8e8a 1%, #4a4a47 40%, #151515 100%);
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.4),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.6),
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(0, 0, 0, 0.15); /* The micro-bezel housing */
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex-shrink: 0;
+    z-index: 2;
+    position: relative;
+}
+
+.status-dot.is-in {
+    /* Glowing Liquified Emerald core */
+    background: 
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 25%),
+        radial-gradient(circle at 50% 50%, #10b981 0%, var(--color-green) 50%, var(--shade-green) 100%);
+    animation: pulse-green 1.8s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.status-dot.is-out {
+    /* Glowing Liquified Ruby core */
+    background: 
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 25%),
+        radial-gradient(circle at 50% 50%, #f43f5e 0%, var(--color-red) 50%, var(--shade-red) 100%);
+    animation: pulse-red 2.2s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes pulse-green {
+    0% {
+        box-shadow: 
+            inset 0 1px 1px rgba(255,255,255,0.4),
+            0 0 3px rgba(16, 185, 129, 0.4);
+        filter: brightness(1);
+    }
+    100% {
+        box-shadow: 
+            inset 0 1px 1px rgba(255,255,255,0.5),
+            0 0 6px rgba(16, 185, 129, 0.6),
+            0 0 12px rgba(16, 185, 129, 0.3),
+            0 0 20px rgba(16, 185, 129, 0.15);
+        filter: brightness(1.25);
+    }
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 
+            inset 0 1px 1px rgba(255,255,255,0.4),
+            0 0 3px rgba(244, 63, 94, 0.4);
+        filter: brightness(1);
+    }
+    100% {
+        box-shadow: 
+            inset 0 1px 1px rgba(255,255,255,0.5),
+            0 0 6px rgba(244, 63, 94, 0.6),
+            0 0 12px rgba(244, 63, 94, 0.3),
+            0 0 20px rgba(244, 63, 94, 0.15);
+        filter: brightness(1.25);
+    }
+}
+
+.status-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.5s ease;
+    z-index: 2;
+    line-height: normal;
+}
+
+.badge-in .status-label {
+    color: var(--shade-green);
+    text-shadow: 0 0 8px rgba(0, 133, 62, 0.25);
+}
+
+.badge-out .status-label {
+    color: var(--shade-red);
+    text-shadow: 0 0 8px rgba(208, 48, 39, 0.25);
+}
+
+/* Live clock — LCD style */
+.live-clock-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0;
+    padding: 12px 0 2px;
+}
+
+.live-clock-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--lcd-text);
+}
+
+.live-clock-sep {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--lcd-text);
+    opacity: 0.5;
+    margin: 0 1px;
+}
+
+.live-clock-sec {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--lcd-text);
+    opacity: 0.5;
+}
+
+.live-date-lcd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--lcd-text);
+    opacity: 0.5;
+    text-align: center;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Since row */
+.since-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+    padding-top: 1px;
+}
+
+.since-label {
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    text-shadow: 0 1px #ffffffa6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* Secondary LCD Screen */
+.since-lcd {
+    background: var(--lcd-bg);
+    padding: 4px 10px;
+    border-radius: 6px;
+    
+    /* Machined Cutout & Screen Depth Layering (Synced with Main LCD) */
+    box-shadow: 
+        -1px -1px 1.5px rgba(0,0,0,0.15), /* Housing top cut */
+        1px 1px 2px rgba(255,255,255,0.95), /* Housing chamfer highlight */
+        
+        /* Internal screen shadows */
+        inset 4px 4px 5px rgba(0,0,0,0.2), 
+        inset -0.5px -0.5px 2px rgba(255,255,255,0.3),
+        inset 0 0 14px rgba(0,0,0,0.05);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Horizontal Scanlines exactly like main LCD */
+.since-lcd::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.05) 2px,
+        rgba(0, 0, 0, 0.05) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
+.since-value {
+    color: #4a4d44; /* Neutral tactile grey for the sub-display */
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 800;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Feedback */
+.printer-housing {
+    position: relative;
+    z-index: 10;
+}
+
+.printer-housing {
+    position: relative;
+    z-index: 10;
+}
+
+.printer-slip {
+    position: absolute;
+    top: 42%; 
+    left: 20px;
+    right: 20px;
+    z-index: 1; 
+    transform: translateY(-100%);
+    transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    pointer-events: none;
+    opacity: 0;
+    will-change: transform;
+    /* Move shadow here so it follows the polygon clip-path */
+    filter: drop-shadow(0 12px 16px rgba(0,0,0,0.3)) drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.printer-slip.show {
+    transform: translateY(56px); 
+    opacity: 1;
+}
+
+.printer-paper {
+    background: var(--casing-bg);
+    /* Sprockets & Technical surface grain combined */
+    background-image: 
+        radial-gradient(circle at 7px 50%, rgba(0,0,0,0.1) 2.5px, transparent 3px),
+        radial-gradient(circle at calc(100% - 7px) 50%, rgba(0,0,0,0.1) 2.5px, transparent 3px),
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 100% 12px, 100% 12px, 100% 4px, 20px 100%;
+    
+    padding: 72px 20px 26px; /* Shifted text further down the slip */
+    box-shadow: 
+        inset 0 1px 0 rgba(255,255,255,0.6),
+        inset 0 0 0 1px rgba(255,255,255,0.2);
+    
+    /* Straight edge, minus both bottom corners */
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 24px),
+        calc(100% - 24px) 100%,
+        24px 100%,
+        0 calc(100% - 24px)
+    );
+    
+    font-family: 'Iosevka Charon', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    position: relative;
+    border-radius: 0;
+    
+    /* Left/Right Perforation Lines */
+    border-left: 1px dashed rgba(0,0,0,0.06);
+    border-right: 1px dashed rgba(0,0,0,0.06);
+}
+
+/* Premium Thermal Printout Formatted Block */
+#feedbackText {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    
+    /* Authentic, purely structural dashed borders using currentColor */
+    background-image: 
+        linear-gradient(to right, currentColor 40%, transparent 40%),
+        linear-gradient(to right, currentColor 40%, transparent 40%);
+    background-position: top, bottom;
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    
+    /* Deep thermal ink bleed and lighting */
+    text-shadow: 
+        0 0 0.5px currentColor, 
+        0 1px 0 rgba(255,255,255,0.7);
+    
+    mix-blend-mode: multiply;
+    opacity: 0.95;
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.05));
+    line-height: 1.2;
+}
+
+/* Machine-generated logical prefix */
+#feedbackText::before {
+    content: "SYS_PRNT //";
+    display: block;
+    font-size: 7.5px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    opacity: 0.5;
+    margin-bottom: 6px;
+}
+
+/* 3D Folded Dog-Ear Corner at Bottom Right */
+.printer-paper::before {
+    content: "";
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 24px; height: 24px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.08) 0%, rgba(255,255,255,0.5) 100%);
+    box-shadow: -2px -2px 4px rgba(0,0,0,0.12); /* Tighter shadow cast up/left */
+    z-index: 2;
+}
+
+/* 3D Folded Dog-Ear Corner at Bottom Left */
+.printer-paper::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 24px; height: 24px;
+    background: linear-gradient(225deg, rgba(0,0,0,0.08) 0%, rgba(255,255,255,0.5) 100%);
+    box-shadow: 2px -2px 4px rgba(0,0,0,0.12); /* Tighter shadow cast up/right */
+    z-index: 2;
+}
+
+/* Subtle Ink Color Feedback (Stamps) */
+.printer-slip.success .printer-paper #feedbackText { 
+    color: var(--shade-green);
+}
+
+.printer-slip.error .printer-paper #feedbackText { 
+    color: var(--shade-red);
+}
+
+/* ═══════════════════════════════════
+   CLOCK CONTROLS
+   ═══════════════════════════════════ */
+.controls-row {
+    display: flex;
+    align-items: stretch;
+}
+
+/* Each control group: inline row on top, name centered below */
+.control-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+/* Button + label code sit on the same horizontal line */
+.control-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.controls-divider {
+    width: 2px;
+    align-self: stretch;
+    background: rgba(181, 181, 181, 0.412); /* Matching panel-divider groove */
+    border-right: 1px solid rgba(255, 255, 255, 0.85); /* Matching sharp specular reflection */
+    box-shadow: inset 1px 0 2px rgba(0, 0, 0, 0.1); 
+    margin: 10px 4px;
+    flex-shrink: 0;
+    border-radius: 1px;
+}
+
+.btn-name {
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    text-shadow: 0 1px #ffffffa6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    margin-left: 10px;
+}
+
+/* Hardware Button */
+.hardware-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-well {
+    width: 48px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--inset-bg);
+    box-shadow: var(--inset-shadow);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.btn-cap {
+    width: 48px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    top: -4px;
+    
+    /* The Lucite Body (Translucent resin base) */
+    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(0, 0, 0, 0.051) 100%);
+    
+    /* Clean Glass Body & Sharp Outer Drop Shadows */
+    box-shadow:
+        0 1px 1px rgba(255, 255, 255, 0.8) inset, /* Sharp specular rim cut */
+        0 -2px 4px rgba(0, 0, 0, 0.4) inset, /* Smooth shadow at the base slope */
+        0 4px 0 rgba(0, 0, 0, 0.25), /* Clean physical rim depth */
+        0 5px 2px rgba(70, 70, 70, 0.151), /* Contact shadow */
+        0 8px 10px rgba(0, 0, 0, 0.25); /* Elegant, diffused cast shadow */
+        
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    transition: all 0.15s cubic-bezier(0.1, 0.7, 0.1, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* For the glass glint */
+}
+
+/* The Glass Glint (Lacquer highlight) */
+.btn-cap::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 45%;
+    border-radius: 50% 50% 0 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* ── The LED Core ── */
+.hardware-btn.clock-btn-in .btn-cap::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    /* Rich Unlit Green Glass Core */
+    background: radial-gradient(circle at 50% 120%, var(--color-green) 0%, #00421e 80%);
+    box-shadow: 
+        inset 0 2px 6px rgba(0,0,0,0.6), /* Inner socket depth */
+        inset 0 -2px 4px rgba(255,255,255,0.2); /* Internal light bounce */
+    transition: all 0.2s;
+    z-index: 1;
+}
+
+.hardware-btn.clock-btn-out .btn-cap::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    /* Rich Unlit Red Glass Core */
+    background: radial-gradient(circle at 50% 120%, var(--color-red) 0%, #600000 80%);
+    box-shadow: 
+        inset 0 2px 6px rgba(0,0,0,0.6), /* Inner socket depth */
+        inset 0 -2px 4px rgba(255,255,255,0.2); /* Internal light bounce */
+    transition: all 0.2s;
+    z-index: 1;
+}
+
+/* Intense Glow on Hover */
+.hardware-btn.clock-btn-in:hover .btn-cap::before {
+    /* Glow rises from the bottom diode */
+    background: radial-gradient(circle at 50% 120%, #00ff6a 0%, var(--color-green) 50%, rgba(0,34,16,0.8) 100%);
+    box-shadow: 
+        inset 0 -2px 8px rgba(0,255,106,0.5),
+        0 0 12px rgba(0, 255, 106, 0.4);
+}
+
+.hardware-btn.clock-btn-out:hover .btn-cap::before {
+    background: radial-gradient(circle at 50% 120%, #ff6b6b 0%, var(--color-red) 50%, rgba(48,0,0,0.8) 100%);
+    box-shadow: 
+        inset 0 -2px 8px rgba(255,77,77,0.5),
+        0 0 12px rgba(255, 77, 77, 0.4);
+}
+
+/* Pressed State */
+.hardware-btn:active .btn-cap,
+.hardware-btn.is-active .btn-cap {
+    top: 2px;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.1) inset,
+        0 0 0 rgba(0,0,0,0.4), /* Depth gone */
+        0 1px 4px rgba(0, 0, 0, 0.5) inset; /* Deep pressed cavity */
+}
+
+/* Maximum Glow on Press */
+.hardware-btn.clock-btn-in:active .btn-cap::before,
+.hardware-btn.clock-btn-in.is-active .btn-cap::before {
+    background: radial-gradient(circle at 50% 120%, #ffffff 0%, #00ff6a 40%, var(--color-green) 100%);
+    box-shadow: inset 0 0 12px rgba(255,255,255,0.6), 0 0 20px rgba(0, 255, 106, 0.8);
+}
+
+.hardware-btn.clock-btn-out:active .btn-cap::before,
+.hardware-btn.clock-btn-out.is-active .btn-cap::before {
+    background: radial-gradient(circle at 50% 120%, #ffffff 0%, #ff6b6b 40%, var(--color-red) 100%);
+    box-shadow: inset 0 0 12px rgba(255,255,255,0.6), 0 0 20px rgba(255, 77, 77, 0.8);
+}
+
+.btn-icon {
+    width: 20px;
+    height: 20px;
+    color: rgba(255, 255, 255, 0.5); /* Dimmed when unlit */
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8)); /* Deep shadow inside the resin */
+    transition: all 0.15s;
+    pointer-events: none;
+    z-index: 10; /* Sits above the core and the glass */
+}
+
+.clock-in-icon {
+    margin-left: -2px; /* Pull to left for visual center */
+}
+
+/* Visual balance adjustment for the exit door icon */
+.clock-out-icon {
+    margin-left: 4px;
+}
+
+.hardware-btn:hover .btn-icon {
+    color: #ffffff;
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.8)); /* Glow bounce on the glass */
+}
+
+.hardware-btn:active .btn-icon,
+.hardware-btn.is-active .btn-icon {
+    transform: translateY(1px) scale(0.95);
+    color: #ffffff;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,1)); /* Maximum flare */
+}
+
+.clock-btn-in  { --btn-color: var(--color-green); --btn-shade: var(--shade-green); }
+.clock-btn-out { --btn-color: var(--color-red);   --btn-shade: var(--shade-red); }
+
+/* ═══════════════════════════════════
+   TODAY'S SUMMARY — Progress Bar
+   ═══════════════════════════════════ */
+.summary-lcd {
+    padding: 14px 16px;
+}
+
+.progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-header,
+.progress-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--lcd-text);
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.progress-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--lcd-text);
+    letter-spacing: 0.04em;
+}
+
+.progress-track {
+    width: 100%;
+    height: 10px;
+    border-radius: 3px;
+    background: rgba(44, 51, 37, 0.1);
+    box-shadow: 
+        inset 1px 1px 3px rgba(0, 0, 0, 0.15),
+        0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    display: flex;
+    gap: 2px;
+    padding: 2px;
+}
+
+.progress-segment {
+    flex: 1;
+    border-radius: 1px;
+    background: rgba(44, 51, 37, 0.08);
+    transition: background 0.3s ease;
+}
+
+.progress-segment.filled {
+    background: rgba(44, 51, 37, 0.5);
+}
+
+@keyframes progress-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.75; }
+}
+
+.progress-track.is-active .progress-segment.filled {
+    animation: progress-pulse 2s ease-in-out infinite;
+}
+
+.progress-detail {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--lcd-text);
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ═══════════════════════════════════
+   FILTER TABS
+   ═══════════════════════════════════ */
+.filter-tabs-container {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-tab {
+    background: var(--inset-bg);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 
+        inset 1px 1px 3px rgba(0,0,0,0.1),
+        inset -1px -1px 3px rgba(255,255,255,0.4),
+        0 1px 0 rgba(255, 255, 255, 0.4);
+    padding: 4px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-label);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.filter-tab:hover {
+    color: var(--text-main);
+    background: #dcdcd5;
+}
+
+.filter-tab.active {
+    background: var(--casing-bg);
+    color: var(--text-main);
+    border-color: rgba(0,0,0,0.15);
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.8) inset, 
+        0 2px 4px rgba(0,0,0,0.1); /* Hardware button pop */
+}
+
+/* Raised Circular Item Count Badge (Glass Bead Style) */
+.tab-count {
+    border-radius: 50%;
+    min-width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px; /* Slightly smaller text */
+    font-weight: 800;
+    padding: 0 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+    
+    /* Raised lens: Highlight on top curve, physical drop shadow beneath */
+    box-shadow: 
+        0 1px 1px rgba(255,255,255,0.7) inset, /* Top edge highlight */
+        0 -1px 2px rgba(0,0,0,0.05) inset,     /* Bottom inner grounding */
+        0 2px 3px rgba(0,0,0,0.15);            /* Cast shadow onto tab */
+    
+    /* Default Grey tint for 'ALL' */
+    background: linear-gradient(180deg, rgba(100,100,100,0.1), rgba(100,100,100,0.25));
+    color: var(--text-muted);
+}
+
+/* Base Tinting (Unselected State) */
+.filter-tab[data-filter="IN"] .tab-count {
+    background: linear-gradient(180deg, rgba(0,133,62,0.08), rgba(0,133,62,0.15));
+    border-color: rgba(0,133,62,0.1);
+    color: var(--shade-green);
+    box-shadow: 0 1px 1px rgba(255,255,255,0.7) inset, 0 -1px 2px rgba(0,133,62,0.05) inset, 0 2px 3px rgba(0,0,0,0.15);
+}
+
+.filter-tab[data-filter="OUT"] .tab-count {
+    background: linear-gradient(180deg, rgba(208,48,39,0.08), rgba(208,48,39,0.15));
+    border-color: rgba(208,48,39,0.1);
+    color: var(--shade-red);
+    box-shadow: 0 1px 1px rgba(255,255,255,0.7) inset, 0 -1px 2px rgba(208,48,39,0.05) inset, 0 2px 3px rgba(0,0,0,0.15);
+}
+
+/* Active State (Slightly deeper color saturation) */
+.filter-tab.active[data-filter="ALL"] .tab-count {
+    background: linear-gradient(180deg, rgba(100,100,100,0.1), rgba(100,100,100,0.2));
+    color: var(--text-main);
+}
+.filter-tab.active[data-filter="IN"] .tab-count {
+    background: linear-gradient(180deg, rgba(0,133,62,0.15), rgba(0,133,62,0.35));
+    border-color: rgba(0,133,62,0.15);
+    color: #003619;
+}
+.filter-tab.active[data-filter="OUT"] .tab-count {
+    background: linear-gradient(180deg, rgba(208,48,39,0.15), rgba(208,48,39,0.35));
+    border-color: rgba(208,48,39,0.15);
+    color: #4a0000;
+}
+
+/* ═══════════════════════════════════
+   HISTORY TABLE & DATE SEPARATORS
+   ═══════════════════════════════════ */
+.date-separator td {
+    padding: 18px 0 10px !important;
+    border-bottom: none !important; /* using the center line instead */
+}
+
+.date-separator-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.date-separator-wrapper::before,
+.date-separator-wrapper::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,0.08); /* The etched line */
+    box-shadow: 0 1px 0 rgba(255,255,255,0.5); /* Physical depth */
+}
+
+.date-separator-label {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--inset-bg);
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.08);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--text-label);
+    letter-spacing: 0.1em;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.05), 0 1px 0 rgba(255,255,255,0.6);
+}
+.table-wrap {
+    padding: 20px 28px 24px; /* Added 20px top padding so the first item isn't transparent at rest */
+    flex: 1;
+    overflow-y: auto;
+    max-height: 410px;
+    
+    /* Hardware Layered Scroll Fade */
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0,0,0,1) 12%,
+        rgba(0,0,0,1) 88%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0,0,0,1) 12%,
+        rgba(0,0,0,1) 88%,
+        transparent 100%
+    );
+}
+
+.table-wrap::-webkit-scrollbar { width: 5px; }
+.table-wrap::-webkit-scrollbar-track { background: transparent; }
+.table-wrap::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.12);
+    border-radius: 10px;
+}
+
+.data-table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+}
+
+/* Force perfect geometric centering for Date column vs Date Separator */
+.data-table th:first-child, .data-table td:first-child { width: 30%; }
+.data-table th:nth-child(2), .data-table td:nth-child(2) { width: 40%; text-align: center; }
+.data-table th:last-child, .data-table td:last-child { width: 30%; text-align: right; }
+
+.data-table th {
+    text-align: left;
+    padding: 14px 0;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    text-shadow: 0 1px #ffffffa6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.6);
+    position: sticky;
+    top: 0;
+    background-color: var(--casing-bg);
+    z-index: 1;
+}
+
+.th-content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+}
+.th-content.justify-start { justify-content: flex-start; }
+.th-content.justify-center { justify-content: center; }
+.th-content.justify-end { justify-content: flex-end; }
+
+.data-table td {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    vertical-align: middle;
+}
+
+.table-data-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-shadow: 0 1px 0 #fff;
+    letter-spacing: 0.02em;
+}
+
+.type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 1px 2px rgba(0, 0, 0, 0.04);
+    line-height: normal;
+}
+
+.badge-green {
+    background: linear-gradient(180deg, rgba(0, 133, 62, 0.08) 0%, rgba(0, 133, 62, 0.16) 100%);
+    color: var(--shade-green);
+    border-color: rgba(0, 133, 62, 0.25);
+}
+
+.badge-red {
+    background: linear-gradient(180deg, rgba(208, 48, 39, 0.08) 0%, rgba(208, 48, 39, 0.16) 100%);
+    color: var(--shade-red);
+    border-color: rgba(208, 48, 39, 0.25);
+}
+
+/* ── Status Tag Variants ── */
+.badge-status-active {
+    background: linear-gradient(180deg, rgba(0, 133, 62, 0.1) 0%, rgba(0, 133, 62, 0.2) 100%);
+    color: var(--shade-green);
+    border-color: rgba(0, 133, 62, 0.3);
+    animation: status-pulse 2s ease-in-out infinite;
+}
+
+.badge-status-started {
+    background: linear-gradient(180deg, rgba(50, 100, 180, 0.08) 0%, rgba(50, 100, 180, 0.16) 100%);
+    color: #3a6aab;
+    border-color: rgba(50, 100, 180, 0.25);
+}
+
+.badge-status-closed {
+    background: linear-gradient(180deg, rgba(106, 107, 102, 0.08) 0%, rgba(106, 107, 102, 0.15) 100%);
+    color: var(--text-label);
+    border-color: rgba(106, 107, 102, 0.2);
+}
+
+.badge-status-overtime {
+    background: linear-gradient(180deg, rgba(180, 100, 0, 0.08) 0%, rgba(180, 100, 0, 0.16) 100%);
+    color: #8a5200;
+    border-color: rgba(180, 100, 0, 0.25);
+}
+
+.badge-status-missed {
+    background: linear-gradient(180deg, rgba(208, 48, 39, 0.06) 0%, rgba(208, 48, 39, 0.12) 100%);
+    color: var(--shade-red);
+    border-color: rgba(208, 48, 39, 0.18);
+    opacity: 0.7;
+}
+
+@keyframes status-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.65; }
+}
+
+/* Elapsed duration chip — shown below time on OUT rows */
+.time-elapsed-sub {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-label);
+    letter-spacing: 0.03em;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 3px;
+    padding: 1px 5px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.panel-footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+}
+
+/* Action Button */
+.action-btn {
+    color: var(--text-muted);
+    letter-spacing: .03em;
+    cursor: pointer;
+    background: linear-gradient(#eaeae6, #e0e0dc);
+    border: 1px solid #00000014;
+    border-color: #fff9 #00000014 #00000014 #ffffff80;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    transition: all .1s;
+    box-shadow: 0 1px 2px #0000000f, inset 0 1px #fff6;
+    outline: none;
+}
+
+.action-btn:active, .action-btn.active-press {
+    background: linear-gradient(#dcdcdc, #e3e3e0);
+    box-shadow: inset 0 1px 2px #0000001a;
+    transform: translateY(1px);
+}
+
+.loading-state {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.empty-state {
+    padding: 64px 0;
+}
+
+.empty-state-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.5;
+}
+
+.empty-state svg {
+    width: 28px;
+    height: 28px;
+    color: var(--text-label);
+    filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.6));
+    margin-bottom: 6px;
+}
+
+
+.empty-state-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    text-shadow: 0 1px #ffffffa6;
+}
+
+.empty-state-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: .05em;
+    opacity: 0.8;
+}
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════ */
+@media (max-width: 800px) {
+    body { padding: 12px; }
+    .navbar { flex-direction: column; gap: 12px; }
+    .dashboard { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════
+   SYSTEM FOOTER
+   ═══════════════════════════════════ */
+.system-footer {
+    width: 100%;
+    margin-top: 13px;
+    padding: 12px 24px 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-inner {
+    width: 100%;
+    max-width: 1120px;
+    border-top: 2px solid rgba(0,0,0,0.03); /* Faint physical seam */
+    padding-top: 14px;
+    display: flex;
+    justify-content: flex-end; /* Moved everything to the right */
+    align-items: center;
+}
+
+.sys-status-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.health-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #88827e;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+@keyframes led-glow-pulse {
+    0% { 
+        box-shadow: 0 0 4px rgba(0, 255, 65, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+    }
+    50% { 
+        box-shadow: 0 0 12px rgba(0, 255, 65, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        background-color: #00ff6a; /* Momentary brightening */
+    }
+    100% { 
+        box-shadow: 0 0 4px rgba(0, 255, 65, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+    }
+}
+
+.health-dot.online {
+    background: rgb(119, 208, 140); /* Vintage green LED */
+    background-image: radial-gradient(circle at 1px 1px, #fff 10%, transparent 40%);
+    animation: led-glow-pulse 3s infinite ease-in-out;
+    border-color: rgba(0, 100, 0, 0.2);
+}
+
+.health-dot.offline {
+    background: var(--color-red);
+    box-shadow: 0 0 6px rgba(208, 48, 39, 0.4);
+}
+
+.sys-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--text-label);
+    letter-spacing: 0.15em;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.6;
+}
+
+.sys-value {
+    font-family: 'Iosevka Charon', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+

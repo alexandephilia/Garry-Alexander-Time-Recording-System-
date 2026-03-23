@@ -9,6 +9,8 @@ interface DailyEntry {
   workedHours: number;
   normalHours: number;
   overtime: number;
+  startTime: string;
+  endTime: string;
 }
 
 interface Report {
@@ -48,7 +50,8 @@ export class ReportService {
 
     // Load work rules into a map keyed by day-of-week (0=Sun .. 6=Sat)
     const workRules = await prisma.workRule.findMany();
-    const rulesMap = new Map(workRules.map((r) => [r.dayOfWeek, r]));
+    type WorkRuleRecord = { dayOfWeek: number; isWorkingDay: boolean; normalHours: number; startTime: string; endTime: string };
+    const rulesMap = new Map<number, WorkRuleRecord>(workRules.map((r: WorkRuleRecord) => [r.dayOfWeek, r]));
 
     // Accumulate worked hours per calendar date
     const dailyMap = new Map<string, number>();
@@ -91,11 +94,13 @@ export class ReportService {
       const rule = rulesMap.get(dayOfWeek);
       const isWorkday = rule?.isWorkingDay ?? true;
       const normalHours = isWorkday ? (rule?.normalHours ?? 8) : 0;
+      const startTime = rule?.startTime ?? '09:00';
+      const endTime = rule?.endTime ?? '18:00';
       const worked = Math.round(workedRaw * 100) / 100;
       const overtime =
         Math.round(Math.max(0, worked - normalHours) * 100) / 100;
 
-      daily.push({ date: dateStr, isWorkday, workedHours: worked, normalHours, overtime });
+      daily.push({ date: dateStr, isWorkday, workedHours: worked, normalHours, overtime, startTime, endTime });
       totalWorked += worked;
       totalOvertime += overtime;
     }

@@ -4,11 +4,12 @@
 <br />
 [![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?logo=claude&logoColor=fff)](#)
 
-A concurrency-safe time-recording REST API built with **Node.js**, **TypeScript**, **Express v5**, **Prisma ORM**, and **SQLite**.
+A concurrency-safe time-recording REST API with a **skeuomorphic dashboard**, built with **Node.js**, **TypeScript**, **Express v5**, **Prisma ORM**, and **SQLite**.
 
 ## Table of Contents
 
 - [Architecture](#architecture)
+- [Frontend Dashboard](#frontend-dashboard)
 - [Security](#security)
 - [Setup & Run](#setup--run)
 - [Database Schema](#database-schema)
@@ -40,6 +41,12 @@ src/
 ├── services/
 │   ├── clockService.ts       # Clock state machine, CRUD logic, transactions
 │   └── reportService.ts      # Overtime calculation, daily aggregation
+public/
+├── index.html                # Dashboard UI (skeuomorphic hardware design)
+├── css/
+│   └── style.css             # Full design system (~1400 lines)
+├── js/
+│   └── app.js                # Client logic (API calls, filters, live clock, connectors)
 prisma/
 ├── schema.prisma             # Data model (User, ClockEvent, WorkRule)
 ├── migrations/               # Auto-generated SQL migrations
@@ -57,6 +64,32 @@ tests/
 - **History invariants**: update and delete operations validate the full user history to prevent broken IN/OUT chains
 - **Midnight session splitting**: reports split hours correctly across days for sessions that span midnight
 - **Graceful shutdown**: `SIGINT` and `SIGTERM` disconnect Prisma before exit
+
+---
+
+## Frontend Dashboard
+
+The dashboard UI is a **fully custom skeuomorphic design** — no frameworks, no component libraries — built with vanilla HTML, CSS, and JavaScript. Every element is crafted to look and feel like a physical piece of premium industrial hardware.
+
+### Design Language
+
+| Element         | Treatment                                                                                       |
+| --------------- | ----------------------------------------------------------------------------------------------- |
+| **Panels**      | Multi-layered "Outer Rim" with inner casing, pseudo-element depth floor, and surface gloss      |
+| **LCD Screens** | Casio-style green displays with `JetBrains Mono` monospace type and ghost digit underlays       |
+| **Buttons**     | 3D button caps inside machined wells with physical press animations                             |
+| **Connectors**  | SVG system-bus traces between panels with groove + specular highlight (matching panel dividers) |
+| **Feedback**    | Thermal "receipt printer" slip animation on clock-in/out actions                                |
+| **Table**       | Date group separators, filter tabs with color-accented count badges, raised footer ledge        |
+
+### Key Features
+
+- **Live Clock**: Real-time hours, minutes, seconds with LCD display
+- **Clock In/Out**: Physical push-buttons with tactile press feedback and receipt animation
+- **Today's Summary**: Segmented progress bar showing hours worked vs. target
+- **Recent Activity**: Filterable event log with IN/OUT/ALL tabs, date grouping, and total count footer
+- **System Health**: Live diagnostic indicator polling `/api/health`
+- **Panel Connectors**: Dynamically drawn SVG traces that bridge panels, responsive to layout changes
 
 ---
 
@@ -124,6 +157,12 @@ npm run dev
 
 The server starts at `http://localhost:3000`.
 
+> **Dashboard:** Open **[http://localhost:3000](http://localhost:3000)** in your browser to access the interactive attendance dashboard. From there you can:
+> - **Clock In / Clock Out** using the hardware-style buttons
+> - **View real-time status** and live session duration
+> - **Browse and filter** the full history of clock events (ALL / IN / OUT tabs)
+> - **See today's progress** — hours worked vs. target, with overtime indicator
+
 ---
 
 ## Database Schema
@@ -149,12 +188,14 @@ erDiagram
         int dayOfWeek UK
         boolean isWorkingDay
         float normalHours
+        string startTime
+        string endTime
     }
 ```
 
 - **User**: identity with unique email
 - **ClockEvent**: each clock transition with type (IN/OUT) and timestamp, indexed on `(userId, timestamp)`
-- **WorkRule**: one row per day of week (0=Sunday .. 6=Saturday), defining whether it is a working day and how many normal hours apply
+- **WorkRule**: one row per day of week (0=Sunday .. 6=Saturday), defining whether it is a working day, normal hours (8h), and expected work window (`startTime`/`endTime`, e.g. 09:00–18:00)
 
 ---
 
