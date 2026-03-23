@@ -820,37 +820,42 @@ body {
     padding: 0;
     outline: none;
     -webkit-tap-highlight-color: transparent;
+    
+    /* Lock layout size to avoid shifting surrounding text */
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-well {
-    width: 48px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: var(--inset-bg);
     box-shadow: var(--inset-shadow);
     position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-shrink: 0;
 }
 
 .btn-cap {
-    width: 48px;
-    height: 40px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    position: absolute;
-    top: -4px;
+    position: relative;
     
     /* The Lucite Body (Translucent resin base) */
     background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(0, 0, 0, 0.051) 100%);
     
-    /* Clean Glass Body & Sharp Outer Drop Shadows */
+    /* Front-acing Clean Glass Body & Sharp Outer Drop Shadows */
     box-shadow:
         0 1px 1px rgba(255, 255, 255, 0.8) inset, /* Sharp specular rim cut */
-        0 -2px 4px rgba(0, 0, 0, 0.4) inset, /* Smooth shadow at the base slope */
-        0 4px 0 rgba(0, 0, 0, 0.25), /* Clean physical rim depth */
-        0 5px 2px rgba(70, 70, 70, 0.151), /* Contact shadow */
-        0 8px 10px rgba(0, 0, 0, 0.25); /* Elegant, diffused cast shadow */
+        0 -1px 2px rgba(0, 0, 0, 0.2) inset, /* Smooth shadow at the base slope */
+        0 2px 6px rgba(0, 0, 0, 0.35); /* Elegant, diffused cast shadow */
         
     border: 1px solid rgba(0, 0, 0, 0.3);
     transition: all 0.15s cubic-bezier(0.1, 0.7, 0.1, 1);
@@ -864,9 +869,9 @@ body {
 .btn-cap::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; height: 45%;
+    top: 2px; left: 2px; right: 2px; height: 50%;
     border-radius: 50% 50% 0 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%);
     pointer-events: none;
     z-index: 5;
 }
@@ -919,10 +924,9 @@ body {
 /* Pressed State */
 .hardware-btn:active .btn-cap,
 .hardware-btn.is-active .btn-cap {
-    top: 2px;
+    transform: scale(0.95);
     box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.1) inset,
-        0 0 0 rgba(0,0,0,0.4), /* Depth gone */
         0 1px 4px rgba(0, 0, 0, 0.5) inset; /* Deep pressed cavity */
 }
 
@@ -940,9 +944,10 @@ body {
 }
 
 .btn-icon {
-    width: 20px;
-    height: 20px;
-    color: rgba(255, 255, 255, 0.5); /* Dimmed when unlit */
+    width: 26px;
+    height: 26px;
+    color: #ffffff; /* Solid color */
+    opacity: 0.5; /* Group opacity prevents overlaps from getting brighter */
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8)); /* Deep shadow inside the resin */
     transition: all 0.15s;
     pointer-events: none;
@@ -959,14 +964,14 @@ body {
 }
 
 .hardware-btn:hover .btn-icon {
-    color: #ffffff;
+    opacity: 1;
     filter: drop-shadow(0 0 4px rgba(255,255,255,0.8)); /* Glow bounce on the glass */
 }
 
 .hardware-btn:active .btn-icon,
 .hardware-btn.is-active .btn-icon {
-    transform: translateY(1px) scale(0.95);
-    color: #ffffff;
+    transform: scale(0.95);
+    opacity: 1;
     filter: drop-shadow(0 0 8px rgba(255,255,255,1)); /* Maximum flare */
 }
 
