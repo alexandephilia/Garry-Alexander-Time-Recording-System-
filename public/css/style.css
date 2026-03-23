@@ -1373,28 +1373,76 @@ body {
     padding: 14px 28px;
 }
 
-/* Action Button */
+/* Action Button (Deep Chamfered) */
 .action-btn {
-    color: var(--text-muted);
-    letter-spacing: .03em;
-    cursor: pointer;
-    background: linear-gradient(#eaeae6, #e0e0dc);
-    border: 1px solid #00000014;
-    border-color: #fff9 #00000014 #00000014 #ffffff80;
-    border-radius: 4px;
-    padding: 6px 14px;
+    --c-lightest: #e8e8e6;
+    --c-light: #dddddc;
+    --c-mid: #d1d2cd;
+    --c-mid-dark: #c8c9c4;
+    --gap: 3px;
+    --btn-radius: 5px;
+    --socket-radius: 8px;
+    --socket-offset: calc(var(--gap) * -1);
+
+    color: var(--text-label);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
-    transition: all .1s;
-    box-shadow: 0 1px 2px #0000000f, inset 0 1px #fff6;
+    letter-spacing: .12em;
+    cursor: pointer;
+    padding: 7px 12px; /* Compact structural proportion */
+    margin: 3px; /* Offset to absorb the outer socket radius visually */
+    position: relative;
     outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.1s ease;
+
+    /* DEEP CHAMFERED SPECIFIC */
+    background: var(--c-lightest);
+    border: 1px solid var(--c-mid-dark);
+    border-radius: var(--btn-radius);
+    box-shadow: 
+        inset 2.5px 2.5px 0 rgba(255, 255, 255, 0.784),
+        inset -2.5px -2.5px 0 rgba(0,0,0,0.03),
+        0 3px 6px rgba(0,0,0,0.06);
+}
+
+.action-btn::before {
+    content: "";
+    position: absolute;
+    top: var(--socket-offset); 
+    left: var(--socket-offset); 
+    right: var(--socket-offset); 
+    bottom: var(--socket-offset);
+    border-radius: var(--socket-radius);
+    pointer-events: none;
+    z-index: -1;
+    background: linear-gradient(135deg, var(--c-light), var(--c-lightest));
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+    box-shadow: 
+        inset 2px 2px 5px rgba(0,0,0,0.15), 
+        inset -2px -2px 5px rgba(255,255,255,0.8),
+        0 1px 1px rgba(255,255,255, 0.7);
+}
+
+.action-btn::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 45%;
+    pointer-events: none;
+    z-index: 2;
+    border-radius: var(--btn-radius) var(--btn-radius) 0 0;
+    background: linear-gradient(180deg, rgba(255,255,255, 0.35) 0%, transparent 100%);
 }
 
 .action-btn:active, .action-btn.active-press {
-    background: linear-gradient(#dcdcdc, #e3e3e0);
-    box-shadow: inset 0 1px 2px #0000001a;
-    transform: translateY(1px);
+    transform: translateY(1.5px) scale(0.97);
+}
+
+.action-btn:active::before, .action-btn.active-press::before {
+    transform: translateY(-1.5px) scale(1.031);
 }
 
 .loading-state {
