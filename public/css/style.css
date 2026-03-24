@@ -990,11 +990,11 @@ body {
 
 /* ── Disabled / Unpowered State ── */
 .hardware-btn:disabled {
-    cursor: default;
+    cursor: not-allowed;
 }
 
 .hardware-btn:disabled .btn-cap {
-    filter: grayscale(100%) brightness(0.6);
+    filter: grayscale(100%) brightness(0.9);
     opacity: 0.8;
     /* Unpressed and flat */
     box-shadow: 
