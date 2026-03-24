@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStatus = 'OUT'; // Track current clock state
     let allHistoryEvents = [];
     let currentHistoryFilter = 'ALL';
+    let isProcessingClock = false; // Prevent double-clicks
 
     const USER_ID = 1;
     const API_BASE = '/api';
@@ -261,6 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function handleClockAction(type) {
+        if (isProcessingClock) return; // Prevent double trigger
+        isProcessingClock = true;
+
         const btn = type === 'IN' ? clockInBtn : clockOutBtn;
         animatePress(btn);
 
@@ -286,6 +290,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error('API Error:', err);
             showFeedback('Network error', 'error');
+        } finally {
+            isProcessingClock = false;
         }
     }
 
@@ -298,10 +304,14 @@ document.addEventListener('DOMContentLoaded', () => {
             statusIndicator.classList.add('is-in');
             statusBadge.classList.add('badge-in');
             statusText.textContent = 'Clocked In';
+            clockInBtn.disabled = true;
+            clockOutBtn.disabled = false;
         } else {
             statusIndicator.classList.add('is-out');
             statusBadge.classList.add('badge-out');
             statusText.textContent = 'Clocked Out';
+            clockInBtn.disabled = false;
+            clockOutBtn.disabled = true;
         }
 
         if (sinceStr) {
@@ -728,11 +738,11 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (e.key.toLowerCase()) {
             case 'i':
                 e.preventDefault();
-                handleClockAction('IN');
+                if (!clockInBtn.disabled) handleClockAction('IN');
                 break;
             case 'o':
                 e.preventDefault();
-                handleClockAction('OUT');
+                if (!clockOutBtn.disabled) handleClockAction('OUT');
                 break;
             case 'r':
                 e.preventDefault();
