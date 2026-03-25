@@ -484,7 +484,7 @@ This runs a comprehensive suite covering:
     <td align="center" valign="top">
       <img src="https://matthiasroder.com/content/images/2026/01/Claude.png" width="100px;" height="100px;" style="border-radius: 30%;" alt=""/><br />
       <sub><b>Claude</b></sub><br />
-      <sub>Implementation</sub>
+      <sub>Co-Assist</sub>
     </td>
   </tr>
 </table>
